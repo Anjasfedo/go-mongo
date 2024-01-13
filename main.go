@@ -13,11 +13,13 @@ func main() {
 
 	uc := controllers.NewUserController(getSession())
 
-	r.GET("")
+	r.GET("/user/:id", uc.GetUserById)
 
-	r.GET("")
+	r.POST("/user", uc.CreateUser)
 
-	r.DELETE("")
+	r.DELETE("/user/:id", uc.DeleteUserById)
+
+	http.ListenAndServe(":8000", r)
 }
 
 func getSession() *mgo.Session {
