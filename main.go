@@ -21,6 +21,8 @@ func main() {
 
 	r.POST("/user", uc.CreateUser)
 
+	r.PUT("/user/:id", uc.UpdateUserById)
+
 	r.DELETE("/user/:id", uc.DeleteUserById)
 
 	fmt.Printf("Start Server on Port 8000\n")

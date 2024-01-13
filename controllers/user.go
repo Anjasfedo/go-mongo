@@ -62,7 +62,7 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, _ ht
 	}
 
 	w.Header().Set("Content-Type", "application-json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, "%s\n", userJson)
 }
 
@@ -80,9 +80,9 @@ func (uc UserController) DeleteUserById(w http.ResponseWriter, r *http.Request, 
 		w.WriteHeader(404)
 		return
 	}
-
+	
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Deleted user %s\n", oid)
+	fmt.Fprintf(w, "Deleted User with ID: %s\n", ID)
 }
 
 func (uc UserController) GetUsers(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -103,4 +103,41 @@ func (uc UserController) GetUsers(w http.ResponseWriter, r *http.Request, _ http
 		}
 		fmt.Fprintf(w, "%s,\n", userJSON)
 	}
+}
+
+func (uc UserController) UpdateUserById(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	ID := p.ByName("id")
+
+	if !bson.IsObjectIdHex(ID) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	oid := bson.ObjectIdHex(ID)
+
+	user := models.User{}
+
+	json.NewDecoder(r.Body).Decode(&user)
+
+	user.ID = oid
+
+	updatedUser := bson.M{"$set": bson.M{
+		"name":   user.Name,
+		"gender": user.Gender,
+		"age":    user.Age,
+	}}
+
+	if err := uc.session.DB("go-mongo").C("users").UpdateId(oid, updatedUser); err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	userJson, err := json.Marshal(user)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	w.Header().Set("Content-Type", "application-json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "%s\n", userJson)
 }

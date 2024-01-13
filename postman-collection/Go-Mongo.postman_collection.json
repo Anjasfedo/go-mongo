@@ -34,6 +34,24 @@
 			"response": []
 		},
 		{
+			"name": "getUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/user/",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "getUserById",
 			"request": {
 				"method": "GET",
@@ -48,6 +66,14 @@
 						"65a290ff2c37b31450763d99"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUserById",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		},
@@ -85,6 +111,10 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"if (pm.request.method === \"POST\" && pm.response.code === 201) {",
+					"    var jsonData = pm.response.json();",
+					"    pm.collectionVariables.set(\"firstUserID\", jsonData._id);",
+					"}",
 					""
 				]
 			}
@@ -95,6 +125,10 @@
 			"key": "server",
 			"value": "http://localhost:8000",
 			"type": "string"
+		},
+		{
+			"key": "firstUserID",
+			"value": ""
 		}
 	]
 }
