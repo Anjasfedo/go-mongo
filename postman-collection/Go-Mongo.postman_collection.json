@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Name\": \"Fedo\",\r\n    \"Gender\": \"male\",\r\n    \"Age\": 20\r\n}",
+					"raw": "{\r\n    \"Name\": \"Anjas\",\r\n    \"Gender\": \"male\",\r\n    \"Age\": 20\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,13 +21,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/user/",
+					"raw": "{{server}}/user",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"user",
-						""
+						"user"
 					]
 				}
 			},
@@ -39,13 +38,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/user/",
+					"raw": "{{server}}/user",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"user",
-						""
+						"user"
 					]
 				}
 			},
@@ -57,13 +55,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/user/65a290ff2c37b31450763d99",
+					"raw": "{{server}}/user/{{firstUserID}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"user",
-						"65a290ff2c37b31450763d99"
+						"{{firstUserID}}"
 					]
 				}
 			},
@@ -72,8 +70,27 @@
 		{
 			"name": "updateUserById",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Fedo200\",\r\n    \"gender\": \"male\",\r\n    \"age\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/user/{{firstUserID}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"{{firstUserID}}"
+					]
+				}
 			},
 			"response": []
 		},
@@ -83,13 +100,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/user/65a290ff2c37b31450763d99",
+					"raw": "{{server}}/user/{{firstUserID}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"user",
-						"65a290ff2c37b31450763d99"
+						"{{firstUserID}}"
 					]
 				}
 			},
