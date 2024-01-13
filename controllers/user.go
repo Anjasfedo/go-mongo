@@ -26,11 +26,11 @@ func (uc UserController) GetUserById(w http.ResponseWriter, r *http.Request, p h
 		return
 	}
 
-	userID := bson.ObjectIdHex(ID)
+	oid := bson.ObjectIdHex(ID)
 
 	user := models.User{}
 
-	if err := uc.session.DB("go-mongo").C("users").FindId(userID).One(&user); err != nil {
+	if err := uc.session.DB("go-mongo").C("users").FindId(oid).One(&user); err != nil {
 		w.WriteHeader(404)
 		return
 	}
@@ -72,13 +72,13 @@ func (uc UserController) DeleteUserById(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	userID := bson.ObjectIdHex(ID)
+	oid := bson.ObjectIdHex(ID)
 
-	if err := uc.session.DB("go-mongo").C("users").RemoveId(userID); err != nil {
+	if err := uc.session.DB("go-mongo").C("users").RemoveId(oid); err != nil {
 		w.WriteHeader(404)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Deleted user %s\n", userID)
+	fmt.Fprintf(w, "Deleted user %s\n", oid)
 }

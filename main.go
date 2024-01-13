@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Anjasfedo/go-mongo/controllers"
@@ -19,11 +21,12 @@ func main() {
 
 	r.DELETE("/user/:id", uc.DeleteUserById)
 
-	http.ListenAndServe(":8000", r)
+	fmt.Printf("Start Server on Port 8000\n")
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
 
 func getSession() *mgo.Session {
-	s, err := mgo.Dial("mongodb://localhost:27107")
+	s, err := mgo.Dial("mongodb://localhost:27017")
 	if err != nil {
 		panic(err)
 	}
