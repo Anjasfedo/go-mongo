@@ -3,11 +3,13 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/Anjasfedo/go-mongo/models"
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"net/http"
 )
 
 type UserController struct {
@@ -81,4 +83,24 @@ func (uc UserController) DeleteUserById(w http.ResponseWriter, r *http.Request, 
 
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Deleted user %s\n", oid)
+}
+
+func (uc UserController) GetUsers(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var users []models.User
+
+	if err := uc.session.DB("go-mongo").C("users").Find(bson.M{}).All(&users); err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application-json")
+	w.WriteHeader(http.StatusOK)
+
+	for _, user := range users {
+		userJSON, err := json.Marshal(user)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Fprintf(w, "%s,\n", userJSON)
+	}
 }

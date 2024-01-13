@@ -15,6 +15,8 @@ func main() {
 
 	uc := controllers.NewUserController(getSession())
 
+	r.GET("/user", uc.GetUsers)
+
 	r.GET("/user/:id", uc.GetUserById)
 
 	r.POST("/user", uc.CreateUser)
